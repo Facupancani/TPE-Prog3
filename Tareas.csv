@@ -1,0 +1,20 @@
+1,Tarea de investigación,60,false,6
+2,Tarea de desarrollo,120,true,3
+3,Tarea de revisión,90,false,2
+4,Tarea de pruebas,60,true,1
+5,Tarea de documentación,150,false,4
+6,Tarea de diseño,80,false,2
+7,Tarea de implementación,100,true,3
+8,Tarea de optimización,70,false,2
+9,Tarea de depuración,110,true,1
+10,Tarea de planificación,140,false,3
+11,Tarea de análisis,90,true,2
+12,Tarea de integración,100,false,4,
+13,Tarea de mantenimiento,120,true,3
+14,Tarea de capacitación,80,false,2
+15,Tarea de configuración,110,true,1
+16,Tarea de validación,130,false,3
+17,Tarea de auditoría,95,true,2
+18,Tarea de control de calidad,85,false,4
+19,Tarea de evaluación,105,true,3
+20,Tarea de seguimiento,75,false,2
