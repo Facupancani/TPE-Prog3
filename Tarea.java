@@ -1,4 +1,6 @@
-public class Tarea{
+import java.util.Comparator;
+
+public class Tarea {
 
   int id_tarea;
   String nombre_tarea;
@@ -44,4 +46,12 @@ public class Tarea{
   public int getNivel_prioridad() {
     return nivel_prioridad;
   }
+
+  public static Comparator<Tarea> TiempoEjecucionComparator = new Comparator<Tarea>() {
+    @Override
+    public int compare(Tarea t1, Tarea t2) {
+      return Integer.compare(t2.getTiempo_ejecucion(), t1.getTiempo_ejecucion());
+    }
+  };
+
 }

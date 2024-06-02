@@ -1,8 +1,11 @@
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class Servicios {
+
+    ArrayList<Procesador> procesadores = new ArrayList<Procesador>();
 
     HashMap<Integer, Tarea> tareaMap;
 
@@ -25,7 +28,8 @@ public class Servicios {
 
         // Carga procesadores en un ArrayList
         String contenidoProcesadores = reader.CSVtoString(pathProcesadores);
-        ArrayList<Procesador> procesadores = reader.CargaProcesadores(contenidoProcesadores);
+        this.procesadores = reader.CargaProcesadores(contenidoProcesadores);
+
 
         // Creo HashMap para el Servicio1
         tareaMap = new HashMap<>();
@@ -33,8 +37,8 @@ public class Servicios {
             tareaMap.put(tarea.getId(), tarea);
         }
 
-        // Creo ArrayLists para las tareas criticas y no criticas
 
+        // Creo ArrayLists para las tareas criticas y no criticas
         for (Tarea tarea : tareas) {
             if (tarea.esCritica() == true) {
                 TareasCriticas.add(tarea);
@@ -42,8 +46,8 @@ public class Servicios {
                 TareasNoCriticas.add(tarea);
         }
 
-        // Creo el arbol de tareas para el servicio 3
 
+        // Creo el arbol de tareas para el servicio 3
         ArbolTareas = new ArbolTareas();
         for (Tarea tarea : tareas) {
             ArbolTareas.insertar(tarea);
@@ -90,6 +94,48 @@ public class Servicios {
         }
         return listado;
     }
+
+    /*
+    *   Para la distribucion de las tareas sobre los procesadores, teniendo las restricciones en cuenta, planteo la siguiente forma de realizar las asignaciones con bactracking de manera optima;
+    *    1. Separar las Tareas criticas y no criticas en dos arreglos ordenados de mayor a menor por tiempo de ejecucion
+    *    2. Inserto primero las tareas criticas y luego las tareas no criticas (piedras y arena)
+    *    3. "BuscarProcesadorMenor" devuelve el procesador compatible con el menor tiempo total de ejecucion de tareas asignadas
+    */
+    public void greedy(int TiempoMaxNoRefrigerados) {
+        Collections.sort(TareasCriticas, Tarea.TiempoEjecucionComparator);
+        Collections.sort(TareasNoCriticas, Tarea.TiempoEjecucionComparator);
+        Collections.sort(procesadores, Procesador.RefrigeradoComparator);
+
+        
+
+        for(Tarea tc : TareasCriticas){
+            Procesador p = BuscarProcesadorMenor(procesadores, tc, TiempoMaxNoRefrigerados);
+            p.insertar(tc);
+        }
+        for(Tarea tc : TareasNoCriticas){
+            Procesador p = BuscarProcesadorMenor(procesadores, tc, TiempoMaxNoRefrigerados);
+            p.insertar(tc);
+        }
+
+    return;
+    }
+
+    public Procesador BuscarProcesadorMenor(ArrayList<Procesador> procesadores, Tarea t, int TiempoMaxNoRefrigerados){
+        Procesador procesadorMenor = null;
+        int tiempoMenor = 0;
+        
+        for (Procesador p : procesadores){
+            if( p.tiempoEjecucion() < tiempoMenor){
+                if (p.puedeInsertar(t,TiempoMaxNoRefrigerados)){
+                    procesadorMenor = p;
+
+                }
+            }
+        }
+        return procesadorMenor;
+    }
+
+
 
     public static void main(String[] args) {
         Servicios serv = new Servicios("procesadores.csv", "tareas.csv");
