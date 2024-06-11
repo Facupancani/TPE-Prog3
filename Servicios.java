@@ -2,7 +2,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 public class Servicios {
 
@@ -132,14 +131,17 @@ public class Servicios {
 
     public static void main(String[] args) {
         Servicios serv = new Servicios("procesadores.csv", "tareas.csv");
-        Greedy solucion = new Greedy("procesadores.csv", "tareas.csv", 184);
+
+        // Tiempo maximo para los procesadores no refrigerados
+        int tiempo = 200;
+
+        Greedy solucion = new Greedy("procesadores.csv", "tareas.csv", tiempo);
         solucion.greedy();
-        // Greedy solucionGreedy = new Greedy("procesadores.csv", "tareas.csv", 100);
-        // solucionGreedy.greedy();
-        // Backtracking solucionBacktracking = new Backtracking("procesadores.csv", "tareas.csv", 200);
-        // System.out.println("Mejor solución encontrada: " + solucionBacktracking.backtracking());
-        // System.out.println("Tiempo máximo de ejecución de la solución: " + solucionBacktracking.getTiempoMejorSolucion());
-        // System.out.println("Cantidad de estados generados: " + solucionBacktracking.getCantEstadosGenerados());
+
+        Backtracking solucionBacktracking = new Backtracking("procesadores.csv", "tareas.csv", tiempo);
+        solucionBacktracking.backtracking();
+        solucionBacktracking.ImprimirResultado();
+
     }
 
 }

@@ -2,7 +2,6 @@ import java.util.*;
 
 public class Greedy{
     private HashMap<Procesador, LinkedList<Tarea>> solucion = new LinkedHashMap<>();
-    private int TiempoMaxGreedy = 0;
     private int tiempoMaximoNoRefrigerado = 0;
     LinkedList<Procesador> procesadores = new LinkedList<Procesador>();
     LinkedList<Tarea> tareas = new LinkedList<Tarea>();
@@ -70,10 +69,7 @@ public class Greedy{
 
     private void agregarTareaAProc(Procesador procesador, Tarea tarea) {
         solucion.get(procesador).add(tarea);
-        procesador.incrementarTiempoEjecucion(tarea.getTiempo_ejecucion());
-        if (tarea.esCritica()) {
-            procesador.incrementarTareasCriticas();
-        }
+        procesador.insertar(tarea);
     }
 
     private Integer getTiempo(){
@@ -97,27 +93,28 @@ public class Greedy{
         Iterator<Map.Entry<Procesador, LinkedList<Tarea>>> itProcesadores = solucion.entrySet().iterator();
         int iteracion = 1;
 
-        System.out.println("===== Aproximacion GREEDY =====");
+        System.out.println("\n\n===== Aproximacion GREEDY =====");
         while (itProcesadores.hasNext()) {
             Map.Entry<Procesador, LinkedList<Tarea>> entry = itProcesadores.next();
             Procesador nextProcesador = entry.getKey();
             LinkedList<Tarea> tareasAsignadas = entry.getValue();
 
-            System.out.printf("Procesador %d:\n", iteracion);
-            // Asumiendo que Procesador tiene un método getId()
+            System.out.printf("\n Procesador %d:\n", iteracion);
             System.out.printf("  ID: %s\n", nextProcesador.getId());
+            System.out.printf("  DATOS: %s\n", nextProcesador);
             System.out.printf("  Tiempo Procesador: %s\n", nextProcesador.getTiempo_ejecucion());
             System.out.printf("  Refrigeracion: %s\n", nextProcesador.esta_refrigerado());
+            if (!nextProcesador.esta_refrigerado) {
+                System.out.println("    -Tiempo maximo no refrigerados: "+ this.tiempoMaximoNoRefrigerado);
+            }
             System.out.println("  Tareas asignadas:");
             for (Tarea tarea : tareasAsignadas) {
-                // Asumiendo que Tarea tiene un método getDescripcion()
                 System.out.printf("    - %s\n", tarea);
             }
             iteracion++;
         }
 
         System.out.println("===== Tiempos =====");
-        System.out.println(" Tiempo maximo no refrigerados: "+ this.tiempoMaximoNoRefrigerado);
         System.out.printf(" Tiempo máximo de aproximación greedy: %d\n", this.getTiempo());
     }
 }

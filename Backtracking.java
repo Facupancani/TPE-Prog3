@@ -59,21 +59,15 @@ public class Backtracking {
     }
 
     private void agregarTareaAProc(Procesador procesador, Tarea tarea,
-            HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
+        HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
         solucionParcial.get(procesador).add(tarea);
-        procesador.incrementarTiempoEjecucion(tarea.getTiempo_ejecucion());
-        if (tarea.esCritica()) {
-            procesador.incrementarTareasCriticas();
-        }
+        procesador.insertar(tarea);
     }
 
     private void sacarTareaAProc(Procesador procesador, Tarea tarea,
             HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
         solucionParcial.get(procesador).remove(tarea);
-        procesador.decrementarTiempoEjecucion(tarea.getTiempo_ejecucion());
-        if (tarea.esCritica()) {
-            procesador.decrementarTareasCriticas();
-        }
+        procesador.remover(tarea);
     }
 
     private Integer getMaxTiempo(HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
@@ -87,10 +81,6 @@ public class Backtracking {
                 maxTiempo = tiempoNextProcesador;
         }
         return maxTiempo;
-    }
-
-    private boolean solucionParcialEsMejorQueSolucion(Integer maxTiempoParcial) {
-        return maxTiempoParcial < this.mejorTiempo || this.mejorTiempo == 0;
     }
 
     private void reemplazarMejorSolucion(HashMap<Procesador, LinkedList<Tarea>> solucionParcial,
@@ -126,4 +116,38 @@ public class Backtracking {
     public int getCantEstadosGenerados() {
         return cantEstadosGenerados;
     }
+
+    public void ImprimirResultado() {
+        Iterator<Map.Entry<Procesador, LinkedList<Tarea>>> itProcesadores = solucion.entrySet().iterator();
+        int iteracion = 1;
+    
+        System.out.println("\n\n===== RESULTADOS BACKTRACKING =====");
+        while (itProcesadores.hasNext()) {
+            Map.Entry<Procesador, LinkedList<Tarea>> entry = itProcesadores.next();
+            Procesador nextProcesador = entry.getKey();
+            LinkedList<Tarea> tareasAsignadas = entry.getValue();
+    
+            // Calcular el tiempo de ejecución sumando los tiempos de ejecución de las tareas asignadas
+            int tiempoEjecucion = tareasAsignadas.stream().mapToInt(Tarea::getTiempo_ejecucion).sum();
+    
+            System.out.printf("\n Procesador %d:\n", iteracion);
+            System.out.printf("  ID: %s\n", nextProcesador.getId());
+            System.out.printf("  Tiempo Procesador: %d\n", tiempoEjecucion); 
+            System.out.printf("  Refrigeracion: %s\n", nextProcesador.esta_refrigerado());
+            if (!nextProcesador.esta_refrigerado()) { 
+                System.out.println("    -Tiempo maximo no refrigerados: " + tiempoEjecucion);
+            }
+            System.out.println("  Tareas asignadas:");
+            for (Tarea tarea : tareasAsignadas) {
+                System.out.printf("    - %s\n", tarea);
+            }
+            iteracion++;
+        }
+    
+        System.out.println("\n===== Tiempos =====");
+        System.out.println(" Tiempo maximo para no refrigerados: " + this.tiempoMaximoNoRefrigerado);
+        System.out.printf(" Tiempo maximo de solucion: %d\n", this.getTiempoMejorSolucion());
+        System.out.println("Cantidad de estados generados: " + this.getCantEstadosGenerados());
+    }
+    
 }

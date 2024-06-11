@@ -26,6 +26,7 @@ public class Procesador {
                       ", codigo_procesador=" + codigo_procesador +
                       ", esta_refrigerado=" + esta_refrigerado +
                       ", año_funcionamiento=" + año_funcionamiento +
+                      ", tiempo_ejecucion=" + tiempo_ejecucion +
                       '}';
           }
           
@@ -80,24 +81,14 @@ public class Procesador {
             this.tiempo_ejecucion += t.getTiempo_ejecucion();
             this.tareas_asignadas.add((t));
         }
-
-
-    public void incrementarTiempoEjecucion(int tiempoEjecucion) {
-        this.tiempo_ejecucion = this.getTiempo_ejecucion() + tiempoEjecucion;
-    }
-
-    public void decrementarTiempoEjecucion(int tiempoEjecucion) {
-        this.tiempo_ejecucion = this.getTiempo_ejecucion() - tiempoEjecucion;
-    }
-
-    public void incrementarTareasCriticas() {
-        this.cantCriticas++;
-    }
-
-    public void decrementarTareasCriticas() {
-        this.cantCriticas--;
-    }
-    
+        public void remover(Tarea t){
+            if (t.es_critica) {
+                this.cantCriticas --;
+            }
+            this.tiempo_ejecucion -= t.getTiempo_ejecucion();
+            this.tareas_asignadas.remove(t);
+        }
+   
     public ArrayList<Tarea> getTareas_asignadas() {
         return tareas_asignadas;
     }
