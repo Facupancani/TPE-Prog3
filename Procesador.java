@@ -97,6 +97,9 @@ public class Procesador {
     public void decrementarTareasCriticas() {
         this.cantCriticas--;
     }
-
+    
+    public ArrayList<Tarea> getTareas_asignadas() {
+        return tareas_asignadas;
+    }
     }
       

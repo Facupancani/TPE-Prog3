@@ -1,9 +1,17 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Reader{
+
+          /*
+           * Procesadores.csv
+                    <id_procesador>;<codigo_procesador>;<esta_refrigerado?>;<año_funcionamiento>
+          Tareas.csv
+                    <id_tarea>;<nombre_tarea>;<tiempo_ejecucion>;<es_critica?>;<nivel_prioridad>
+           */
 
           // Convierte un archivo CSV a String
           public String CSVtoString(String rutaArchivo) {
@@ -24,7 +32,7 @@ public class Reader{
 
           // Toma la informacion de las tareas y los convierte en objetos almacenados en un arreglo
         public LinkedList<Tarea> CargaTareas(String tareas){
-            LinkedList<Tarea> Tareas = new LinkedList<Tarea>();
+            LinkedList<Tarea> ArrTareas = new LinkedList<Tarea>();
 
                     String[] lineas = tareas.split("\\n");
                     
@@ -41,9 +49,9 @@ public class Reader{
 
                         //Creo el objeto Tarea y lo inserto en el arreglo
                               Tarea t = new Tarea(id_tarea, nombre_tarea, tiempo_ejecucion, es_critica, nivel_prioridad);
-                              Tareas.add(t);
+                              ArrTareas.add(t);
                     }
-          return Tareas;
+          return ArrTareas;
           }
 
           // Toma la informacion de los procesadores y los convierte en objetos almacenados en un arreglo
@@ -67,4 +75,38 @@ public class Reader{
           return ArrProcesadores;
           }
 
+
+
+          
+         /*  public class Main {
+            public static void main(String[] args) {
+                Reader reader = new Reader();
+                
+                // Carga y muestra tareas
+                String contenidoTareas = reader.CSVtoString("tareas.csv");
+                ArrayList<Tarea> tareas = reader.CargaTareas(contenidoTareas);
+                System.out.println("Tareas:");
+                mostrarTareas(tareas);
+                
+                
+                // Carga y muestra procesadores
+                String contenidoProcesadores = reader.CSVtoString("procesadores.csv");
+                ArrayList<Procesador> procesadores = reader.CargaProcesadores(contenidoProcesadores);
+                System.out.println("\nProcesadores:");
+                mostrarProcesadores(procesadores);
+            }
+            
+            public static void mostrarTareas(ArrayList<Tarea> tareas) {
+                for (Tarea tarea : tareas) {
+                    System.out.println(tarea.toString());
+                }
+            }
+            
+            public static void mostrarProcesadores(ArrayList<Procesador> procesadores) {
+                for (Procesador procesador : procesadores) {
+                    System.out.println(procesador.toString());
+                }
+            }
+        }*/
+        
 }

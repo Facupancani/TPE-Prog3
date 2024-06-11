@@ -5,13 +5,22 @@ public class Backtracking {
     private LinkedList<Procesador> procesadores;
     private LinkedList<Tarea> colaTareas;
     private int cantEstadosGenerados = 0;
-    private int maxTiempoActual = 0;
+    private int mejorTiempo = 0;
     private int tiempoMaximoNoRefrigerado;
+    private Integer tiempoParcial;
 
-    public Backtracking(LinkedList<Procesador> procesadores, LinkedList<Tarea> tareas, int tiempoMax) {
-        this.colaTareas = tareas;
-        this.procesadores = procesadores;
+    public Backtracking(String pathProcesadores, String pathTareas, int tiempoMax) {
+        Reader reader = new Reader();
+        String contenidoProcesadores = reader.CSVtoString(pathProcesadores);
+        this.procesadores = reader.CargaProcesadores(contenidoProcesadores);
+        String contenidoTareas = reader.CSVtoString(pathTareas);
+        this.colaTareas = reader.CargaTareas(contenidoTareas);
         this.tiempoMaximoNoRefrigerado = tiempoMax;
+    }
+
+    public Backtracking(String pathProcesadores, String pathTareas, int tiempoMax, Integer aproximacion) {
+        this(pathProcesadores, pathTareas, tiempoMax);
+        this.mejorTiempo = aproximacion;
     }
 
     public HashMap<Procesador, LinkedList<Tarea>> backtracking() {
@@ -29,36 +38,40 @@ public class Backtracking {
 
     private void backtracking(HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
         this.cantEstadosGenerados++;
-        if (colaTareas.isEmpty()){
-            Integer tiempoParcial = getMaxTiempo(solucionParcial);
-            if (solucionParcialEsMejorQueSolucion(tiempoParcial)) {
+        tiempoParcial = getMaxTiempo(solucionParcial);
+        if (tiempoParcial <= mejorTiempo || mejorTiempo==0) {
+            if (colaTareas.isEmpty()) {
                 reemplazarMejorSolucion(solucionParcial, tiempoParcial);
-            }
-        } else {
-            Tarea nextTarea = colaTareas.remove();
-            for (Procesador procesador : this.procesadores) {
-                if (procesador.puedeInsertar(nextTarea, tiempoMaximoNoRefrigerado)) {
-                    agregarTareaAProc(procesador, nextTarea, solucionParcial);
-                    backtracking(solucionParcial);
-                    sacarTareaAProc(procesador, nextTarea, solucionParcial);
+            } else {
+
+                Tarea nextTarea = colaTareas.remove();
+                for (Procesador procesador : this.procesadores) {
+                    if (procesador.puedeInsertar(nextTarea, tiempoMaximoNoRefrigerado)) {
+                        agregarTareaAProc(procesador, nextTarea, solucionParcial);
+                        backtracking(solucionParcial);
+                        sacarTareaAProc(procesador, nextTarea, solucionParcial);
+                    }
                 }
+
+                colaTareas.add(0, nextTarea);
             }
-            colaTareas.add(0, nextTarea);
         }
     }
 
-    private void agregarTareaAProc(Procesador procesador, Tarea tarea, HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
+    private void agregarTareaAProc(Procesador procesador, Tarea tarea,
+            HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
         solucionParcial.get(procesador).add(tarea);
         procesador.incrementarTiempoEjecucion(tarea.getTiempo_ejecucion());
-        if (tarea.esCritica()){
+        if (tarea.esCritica()) {
             procesador.incrementarTareasCriticas();
         }
     }
 
-    private void sacarTareaAProc(Procesador procesador, Tarea tarea, HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
+    private void sacarTareaAProc(Procesador procesador, Tarea tarea,
+            HashMap<Procesador, LinkedList<Tarea>> solucionParcial) {
         solucionParcial.get(procesador).remove(tarea);
         procesador.decrementarTiempoEjecucion(tarea.getTiempo_ejecucion());
-        if (tarea.esCritica()){
+        if (tarea.esCritica()) {
             procesador.decrementarTareasCriticas();
         }
     }
@@ -77,23 +90,23 @@ public class Backtracking {
     }
 
     private boolean solucionParcialEsMejorQueSolucion(Integer maxTiempoParcial) {
-        System.out.println(maxTiempoParcial +  " < " + this.maxTiempoActual);
-        return maxTiempoParcial < this.maxTiempoActual || this.maxTiempoActual == 0;
+        return maxTiempoParcial < this.mejorTiempo || this.mejorTiempo == 0;
     }
 
-    private void reemplazarMejorSolucion(HashMap<Procesador, LinkedList<Tarea>> solucionParcial, Integer maxTiempoParcial) {
+    private void reemplazarMejorSolucion(HashMap<Procesador, LinkedList<Tarea>> solucionParcial,
+            Integer maxTiempoParcial) {
         for (Procesador procesador : procesadores) {
             LinkedList<Tarea> tareasSolucionParcial = solucionParcial.get(procesador);
             solucion.get(procesador).clear();
             solucion.get(procesador).addAll(tareasSolucionParcial);
         }
-        this.maxTiempoActual = maxTiempoParcial;
+        this.mejorTiempo = maxTiempoParcial;
     }
 
     public Integer getTiempoMejorSolucion() {
         if (solucionVacia())
             return -1;
-        return maxTiempoActual;
+        return mejorTiempo;
     }
 
     private boolean solucionVacia() {
@@ -109,7 +122,6 @@ public class Backtracking {
         }
         return vacio;
     }
-
 
     public int getCantEstadosGenerados() {
         return cantEstadosGenerados;

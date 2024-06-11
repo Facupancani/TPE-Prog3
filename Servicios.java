@@ -101,36 +101,6 @@ public class Servicios {
     }
 
 
-
-    /*
-    *   Para la distribucion de las tareas sobre los procesadores, teniendo las restricciones en cuenta, planteo la siguiente forma de realizar las asignaciones con bactracking de manera optima;
-    *    1. Separar las Tareas criticas y no criticas en dos arreglos ordenados de mayor a menor por tiempo de ejecucion (un if para ver si entran)
-    *    2. Inserto primero las tareas criticas y luego las tareas no criticas (piedras y arena)
-    *    3. "BuscarProcesadorMenor" devuelve el procesador compatible con el menor tiempo total de ejecucion de tareas asignadas
-    */
-    public void greedy(int TiempoMaxNoRefrigerados) {
-        Collections.sort(TareasCriticas, Tarea.TiempoEjecucionComparator);
-        Collections.sort(TareasNoCriticas, Tarea.TiempoEjecucionComparator);
-        Collections.sort(procesadores, Procesador.RefrigeradoComparator);
-
-        //Caso en que las tareas criticas no entren
-        if(TareasCriticas.size() > (procesadores.size()*2)){
-            System.out.println("No hay procesadores suficientes para manejar las tareas criticas");
-            return;
-        }
-        for(Tarea tc : TareasCriticas){
-            Procesador p = BuscarProcesadorMenor(procesadores, tc, TiempoMaxNoRefrigerados);
-            p.insertar(tc);
-        }
-        for(Tarea t : TareasNoCriticas){
-            Procesador p = BuscarProcesadorMenor(procesadores, t, TiempoMaxNoRefrigerados);
-            p.insertar(t);
-        }
-
-        System.out.println("Tiempo maximo de la aproximacion Greedy: " + getTiempoMax(procesadores));
-
-    return;
-    }
     public Procesador BuscarProcesadorMenor(LinkedList<Procesador> procesadores, Tarea t, int TiempoMaxNoRefrigerados){
         Procesador procesadorMenor = procesadores.get(0);
         int tiempoMenor = procesadores.get(0).tiempo_ejecucion;
@@ -145,6 +115,7 @@ public class Servicios {
         }
         return procesadorMenor;
     }
+
     public int getTiempoMax(LinkedList<Procesador> procesadores){
         int tiempoMayor = procesadores.get(0).getTiempo_ejecucion();
         for(Procesador p : procesadores){
@@ -156,17 +127,19 @@ public class Servicios {
     }
 
     public void servBacktracking(int tiempo){       
-        Backtracking solucionBacktracking = new Backtracking(procesadores, tareas, tiempo);
-        System.out.println("Mejor solución encontrada: " + solucionBacktracking.backtracking());
-        System.out.println("Tiempo máximo de ejecución de la solución: " + solucionBacktracking.getTiempoMejorSolucion());
-        System.out.println("Cantidad de estados generados: " + solucionBacktracking.getCantEstadosGenerados());
+        
     }
 
     public static void main(String[] args) {
         Servicios serv = new Servicios("procesadores.csv", "tareas.csv");
-        System.out.println(serv.servicio2(true));
-        serv.greedy(200);
-        serv.servBacktracking(2000);
+        Greedy solucion = new Greedy("procesadores.csv", "tareas.csv", 184);
+        solucion.greedy();
+        // Greedy solucionGreedy = new Greedy("procesadores.csv", "tareas.csv", 100);
+        // solucionGreedy.greedy();
+        // Backtracking solucionBacktracking = new Backtracking("procesadores.csv", "tareas.csv", 200);
+        // System.out.println("Mejor solución encontrada: " + solucionBacktracking.backtracking());
+        // System.out.println("Tiempo máximo de ejecución de la solución: " + solucionBacktracking.getTiempoMejorSolucion());
+        // System.out.println("Cantidad de estados generados: " + solucionBacktracking.getCantEstadosGenerados());
     }
 
 }
