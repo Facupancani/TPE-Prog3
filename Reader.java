@@ -41,7 +41,7 @@ public class Reader{
                               String[] partes = lineas[linea].split("[,;]");
 
                         //Asigno la informacion a variables
-                              int id_tarea = Integer.parseInt(partes[0]);
+                              String id_tarea = partes[0];
                               String nombre_tarea = partes[1];
                               int tiempo_ejecucion = Integer.parseInt(partes[2]);
                               Boolean es_critica = Boolean.parseBoolean(partes[3]);
@@ -64,8 +64,8 @@ public class Reader{
                         // Aca separa cada linea en sus partes correspondientes <id_procesador>;<codigo_procesador>;<esta_refrigerado?>;<año_funcionamiento> Sin importar si se separan por , o ;
                         String[] partes = lineas[linea].split("[,;]");
                 
-                        int id_procesador =  Integer.parseInt(partes[0]);
-                        int codigo_procesador = Integer.parseInt(partes[1]);
+                        String id_procesador =  partes[0];
+                        String codigo_procesador = partes[1];
                         Boolean esta_refrigerado = Boolean.parseBoolean(partes[2]);
                         int año_funcionamiento = Integer.parseInt(partes[3]);
 

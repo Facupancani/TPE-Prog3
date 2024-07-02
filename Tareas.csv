@@ -1,4 +1,6 @@
-1,Tarea de investigación,60,false,6
-2,Tarea de desarrollo,125,true,3
-3,Tarea de revisión,90,false,2
-4,Tarea de pruebas,60,true,1
+T1;Tarea1;90;false;92
+T2;Tarea2;15;true;31
+T3;Tarea3;80;false;70
+T4;Tarea4;20;true;58
+T5;Tarea5;15;true;1
+T6;Tarea6;10;true;31

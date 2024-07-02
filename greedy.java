@@ -8,6 +8,16 @@ public class Greedy{
     ArrayList<Tarea> TareasCriticas = new ArrayList<Tarea>();
     ArrayList<Tarea> TareasNoCriticas = new ArrayList<Tarea>();
 
+    /* 
+     * Para la buscar una aproximacion con la estategia Greedy, decidimos asignar primero las tareas criticas y luego no criticas 
+     * Siendo que las criticas tienen una condicion especial para insertarse, podemos distribuirlas lo mas parejo posible y luego insertar
+     * cada una de las no criticas en el procesador con menor tiempo en cada insercion.
+     * Ademas, si las tareas criticas superan la cantidad de procesadores que puedan manejarlas, el error se verá antes de insertar las no criticas,
+     * evitando inserciones innecesarias y disminuyendo la complejidad temporal en este caso.
+     * La estrategia que plantea el greedy es ver recorrer las tareas e insertar una por una en el procesador con el menor tiempo de ejecucion actual
+     * Teniendo siempre en cuenta que pueda insertarla (si no esta refrigerado, que no exceda el tiempo o si la tarea es critica, que este no supere la cuota)
+     */
+
     public Greedy(String pathProcesadores, String pathTareas, int tiempoMax) {
         Reader reader = new Reader();
         String contenidoProcesadores = reader.CSVtoString(pathProcesadores);

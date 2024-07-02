@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Procesador {
-          int id_procesador;
-          int codigo_procesador;
+          String id_procesador;
+          String codigo_procesador;
           Boolean esta_refrigerado;
           int año_funcionamiento;
           ArrayList<Tarea> tareas_asignadas;
@@ -11,7 +11,7 @@ public class Procesador {
           int tiempo_ejecucion = 0;
       
 
-        public Procesador(int id, int codigo, Boolean refrigerado, int año) {
+        public Procesador(String id, String codigo, Boolean refrigerado, int año) {
               this.id_procesador = id;
               this.codigo_procesador = codigo;
               this.esta_refrigerado = refrigerado;
@@ -40,11 +40,11 @@ public class Procesador {
             }
         };
 
-        public int getId() {
+        public String getId() {
             return id_procesador;
         }
 
-        public int getCodigo() {
+        public String getCodigo() {
             return codigo_procesador;
         }
 

@@ -18,6 +18,14 @@ public class Backtracking {
         this.tiempoMaximoNoRefrigerado = tiempoMax;
     }
 
+    /*
+     * Para la solucion Backtracking implementada, se pone los procesadores en una lista y se crea una cola de tareas.
+     * Se recorren los procesadores y se toma el primer elemento de la cola de tareas, eliminandolo de la cola.
+     * Y tomo el primer procesador en el que puedo insertar la tarea, revisando que la asignacion cumpla las restricciones de tiempo, cant de criticas (segun corresponda) y no supere la poda. Esto hasta que encuentre un procesador valido (sino, no tiene solucion).
+     * Una vez se termine la cola de tareas, se vuelve al estado anterior de la recursion, se quita la tarea del procesador para evaluar la asignación de la tarea en el siguiente procesador disponible.
+     * Asi, probamos todas las combinaciones entre tareas y procesadores para poder encontrar la mejor solucion posible.
+     */
+
     public Backtracking(String pathProcesadores, String pathTareas, int tiempoMax, Integer aproximacion) {
         this(pathProcesadores, pathTareas, tiempoMax);
         this.mejorTiempo = aproximacion;
@@ -146,7 +154,12 @@ public class Backtracking {
     
         System.out.println("\n===== Tiempos =====");
         System.out.println(" Tiempo maximo para no refrigerados: " + this.tiempoMaximoNoRefrigerado);
-        System.out.printf(" Tiempo maximo de solucion: %d\n", this.getTiempoMejorSolucion());
+        if (this.getTiempoMejorSolucion() == -1) {
+            System.out.println("Tiempo máximo de solución: No hay solución");
+        } else {
+            System.out.printf("Tiempo máximo de solución: %d\n", this.getTiempoMejorSolucion());
+        }
+        
         System.out.println("Cantidad de estados generados: " + this.getCantEstadosGenerados());
     }
     

@@ -7,7 +7,7 @@ public class Servicios {
 
     LinkedList<Procesador> procesadores = new LinkedList<Procesador>();
 
-    HashMap<Integer, Tarea> tareaMap;
+    HashMap<String, Tarea> tareaMap;
 
     LinkedList<Tarea> tareas = new LinkedList<Tarea>();
     ArrayList<Tarea> TareasCriticas = new ArrayList<Tarea>();
@@ -133,12 +133,12 @@ public class Servicios {
         Servicios serv = new Servicios("procesadores.csv", "tareas.csv");
 
         // Tiempo maximo para los procesadores no refrigerados
-        int tiempo = 200;
+        int tiempo = 80;
 
         Greedy solucion = new Greedy("procesadores.csv", "tareas.csv", tiempo);
         solucion.greedy();
 
-        Backtracking solucionBacktracking = new Backtracking("procesadores.csv", "tareas.csv", tiempo);
+        Backtracking solucionBacktracking = new Backtracking("procesadores.csv", "tareas2.csv", tiempo);
         solucionBacktracking.backtracking();
         solucionBacktracking.ImprimirResultado();
 

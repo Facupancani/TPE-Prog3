@@ -2,13 +2,13 @@ import java.util.Comparator;
 
 public class Tarea {
 
-  int id_tarea;
+  String id_tarea;
   String nombre_tarea;
   int tiempo_ejecucion;
   Boolean es_critica;
   int nivel_prioridad;
 
-  public Tarea(int id, String nombre, int tiempo, Boolean esCritica, int nivel) {
+  public Tarea(String id, String nombre, int tiempo, Boolean esCritica, int nivel) {
     this.id_tarea = id;
     this.nombre_tarea = nombre;
     this.tiempo_ejecucion = tiempo;
@@ -16,7 +16,7 @@ public class Tarea {
     this.nivel_prioridad = nivel;
   }
 
-  public int getId() {
+  public String getId() {
     return this.id_tarea;
   }
 
